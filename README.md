@@ -22,3 +22,19 @@ Azure Synapse is an end-to-end analytics platform which combines SQL data wareho
 
 ## Power BI
 It is a tool that is used to create charts/dasboards/reports over the data.
+
+## Architecture
+
+<img width="578" alt="image" src="https://github.com/crazylot/Telemetry-Data-Processing-With-Azure/assets/63306186/3f58c647-2932-49ae-b8d4-485f05f07809">
+
+## Approach
+
+1. First We need to create a Event Hub , Stream Analytics Service and Azure Synpase Workspace
+2. Create a dedicated SQL Pool within Azure Synapse Workspace. Serverless SQL Pool cannot be used as T-SQL statements related to Tables are not supported.
+3. Create a database and a table within dedicated sql pool.
+4. Go to your Azure Stream Analytics Service and cofigure Input as Event Hub and Output as table within dedicated SQL pool in Synapse Workspace.
+5. Start your Stream Analytics Job
+6. Run Data Generator Tool to send data to your Event Hub Service
+7. Now you can use Power BI service provided in Azure Synapse Workspace to create dashboard over the data present in the table
+
+
