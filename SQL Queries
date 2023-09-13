@@ -1,0 +1,40 @@
+## SQL Queries used -
+CREATE TABLE dbo.VehicleAveragesByRegion
+ ( 
+     [AverageEngineTemperature] [float] NOT  NULL,
+     [AverageSpeed] [float] NOT  NULL,
+     [AverageTirePressure] [float] NOT  NULL,
+     [AverageOdometerReading] [float] NOT  NULL,
+     [region] [VARCHAR] (100) NOT NULL  
+ )
+ WITH
+ (
+     DISTRIBUTION = ROUND_ROBIN,
+     CLUSTERED COLUMNSTORE INDEX
+ )
+ GO
+
+ Select * FROM VehicleAveragesByRegion
+
+## Stream Analytics Job Query
+
+WITH
+VehicleAverages AS (
+    select
+        AVG(engineTemperature) averageEngineTemperature,
+        AVG(speed) averageSpeed,
+        AVG(tirepressure) AverageTirePressure,
+        AVG(odometer) AverageOdometerReading,
+        region as region
+    FROM
+        telemetryincoming 
+    GROUP BY
+        TumblingWindow(Duration(second, 10)),region
+)
+-- INSERT INTO SYNAPSE ANALYTICS
+SELECT
+    *
+INTO
+    AverageDataByRegion
+FROM
+    VehicleAverages
