@@ -38,4 +38,5 @@ It is a tool that is used to create charts/dasboards/reports over the data.
 7. Now you can use Power BI service provided in Azure Synapse Workspace to create dashboard over the data present in the table
 
 Find detailed steps in the PPT Provided with this GitHub repository
+I have also added Power BI File built over data ingested from these events. It Provides Information on Average Engine Temperature, Average Odometer Reading etc of multiple vehicles across various cities and region.
 
