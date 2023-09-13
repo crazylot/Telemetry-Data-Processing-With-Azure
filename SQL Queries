@@ -1,4 +1,8 @@
-## SQL Queries used -
+## SQL Queries used - 
+
+Use the following query in synapse aalytics to create a table to contain average engine temperature, 
+average speed , average tire pressure and average odometer reading of a car by region
+
 CREATE TABLE dbo.VehicleAveragesByRegion
  ( 
      [AverageEngineTemperature] [float] NOT  NULL,
@@ -16,7 +20,7 @@ CREATE TABLE dbo.VehicleAveragesByRegion
 
  Select * FROM VehicleAveragesByRegion
 
-## Stream Analytics Job Query
+## Stream Analytics Job Query for the above query
 
 WITH
 VehicleAverages AS (
@@ -38,3 +42,53 @@ INTO
     AverageDataByRegion
 FROM
     VehicleAverages
+
+
+
+We can also create a table to store vehicle information:=
+ CREATE TABLE dbo.VehicleInfo
+ ( 
+     [vin] [varchar] (100) NOT  NULL,
+     [city] [varchar] (100),
+     [region] [varchar] (100),
+     [outsideTemperature] [bigint],
+     [engineTemperature] [bigint],
+     [speed] [bigint],
+     [fuel] [bigint],
+     [engineoil] [bigint],
+     [tirepressure] [bigint],
+     [odometer] [bigint]
+ )
+ WITH
+ (
+     DISTRIBUTION = ROUND_ROBIN,
+     CLUSTERED COLUMNSTORE INDEX
+ )
+ GO
+
+--> Following will be stream analytics query for it
+
+WITH
+VehicleInfo AS (
+    select
+        vin as vin,
+        city as city,
+        region as region,
+        outsideTemperature as outsideTemperature,
+        engineTemperature as engineTemperature,
+        speed as speed,
+    fuel as fuel,
+    engineoil as engineoil,
+    tirepressure as tirepressure,
+    odometer as odometer
+
+    FROM
+        telemetryincoming 
+)
+-- INSERT INTO SYNAPSE ANALYTICS
+SELECT
+    *
+INTO
+    VehicleInformation
+FROM
+    VehicleInfo
